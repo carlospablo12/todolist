@@ -18,7 +18,7 @@ public class UserController {
     @Autowired
     private IUserRepository userRepository;
 
-  @PostMapping("/")
+ @PostMapping("/")
 public ResponseEntity<?> create(@RequestBody UserModel userModel) {
 
     var user = this.userRepository.findByUsername(userModel.getUsername());
@@ -27,7 +27,7 @@ public ResponseEntity<?> create(@RequestBody UserModel userModel) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body("Usuário já existe no banco de dados.");
-    }
+       }
 
     var passwordHashed = BCrypt
             .withDefaults()
@@ -40,7 +40,7 @@ public ResponseEntity<?> create(@RequestBody UserModel userModel) {
     return ResponseEntity
             .status(HttpStatus.CREATED)
             .body(userCreated);
-}
+       }
     
 }
 // Como acessar  atributos privates
