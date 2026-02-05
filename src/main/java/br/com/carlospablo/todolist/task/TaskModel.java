@@ -32,7 +32,7 @@ public class TaskModel {
     @Column(length = 50)
     private String title;
     private LocalDateTime startAt;
-    private Date endAt;
+    private LocalDateTime endAt;
     private String priority;
     
     @CreationTimestamp
