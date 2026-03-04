@@ -59,15 +59,25 @@ public class TaskController {
     }
     // Update
     @PutMapping("/{id}")
-    public TaskModel update(@RequestBody TaskModel taskModel, HttpServletRequest request, @PathVariable UUID id ){
+    public ResponseEntity update(@RequestBody TaskModel taskModel, @PathVariable UUID id , HttpServletRequest request){
        
 
         var task = this.iTaskRepository.findById(id).orElse(null);
+        if (task == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Tarefa não encontrada");
+        }
+
+        var idUser = request.getAttribute("idUser");
+        if(!task.getIdUser().equals(idUser)){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+            .body("O Usuário não tem permissão para  acessar está tarefas.");
+        }
 
         Utils.copyNonNullProperties(taskModel, task);
 
-        
-        return this.iTaskRepository.save(task);
+        var taskUpdated = this.iTaskRepository.save(task);
+
+        return ResponseEntity.ok().body(this.iTaskRepository.save(taskUpdated));
         
     }
 
