@@ -6,7 +6,7 @@ Este projeto é ideal para aprender e demonstrar como construir APIs com Spring 
 
 ---
 
-## 📌 Tecnologias Utilizadas
+## 📌 Tecnologias Utilizadas 
 
 - Java  
 - Spring Boot  
