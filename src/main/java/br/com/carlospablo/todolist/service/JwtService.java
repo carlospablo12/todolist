@@ -1,7 +1,6 @@
 package br.com.carlospablo.todolist.service;
 
 import java.nio.charset.StandardCharsets;
-import java.security.Key;
 import java.util.Date;
 
 import javax.crypto.SecretKey;
@@ -9,9 +8,10 @@ import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import io.jsonwebtoken.security.SignatureAlgorithm;
+
 
 
 
@@ -49,4 +49,13 @@ public class JwtService {
             return false;
         }
     }
+    // Extraindo o subject 
+  public String extractSubject(String token){
+    return Jwts.parser()
+        .verifyWith((getSigningKey()))
+        .build().parseSignedClaims(token)
+        .getPayload()
+        .getSubject();
+
+  }
 }

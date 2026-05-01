@@ -25,18 +25,20 @@ public class UserController {
     @Autowired
     private IUserRepository userRepository;
 
-    @Autowired
-    private JwtService jwtService;
+    
 
 @PostMapping("/")
 public ResponseEntity<?> create(@RequestBody UserModel userModel) {
 
+    System.out.println("Username recebido: " + userModel.getUsername());
     var user = this.userRepository.findByUsername(userModel.getUsername());
 
+     System.out.println("Usuário encontrado: " + user);
+     
     if (user != null) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body("Usuário já existe no banco de dados.");
+                .body(Map.of("menssagem","Usuário já existe no banco de dados."));
     }
 
     var passwordHashed = BCrypt
@@ -46,12 +48,15 @@ public ResponseEntity<?> create(@RequestBody UserModel userModel) {
     userModel.setPassword(passwordHashed);
 
     var userCreated = this.userRepository.save(userModel);
+    System.out.print("Chegamos ATE AQUI");
 
     return ResponseEntity
             .status(HttpStatus.CREATED)
             .body(userCreated);
+            
 }
-
+@Autowired
+private JwtService jwtService;
 // Autenticação p/ login
 @PostMapping("auth/login")
 public ResponseEntity<?> login(@RequestBody UserModel userModel){
